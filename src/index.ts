@@ -7,7 +7,14 @@ import employeeRoutes from "./routes/employees";
 const app = express();
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: (origin, callback) => {
+    const allowed = process.env.FRONTEND_URL;
+    if (!origin || !allowed || origin === allowed || origin.startsWith(allowed)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS blocked: ${origin}`));
+    }
+  },
   credentials: true,
 }));
 
