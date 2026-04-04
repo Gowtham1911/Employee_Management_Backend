@@ -85,11 +85,11 @@ router.post("/bulk", authenticate, requireAdmin, upload.single("file"), async (r
           [emp.email, defaultPassword]
         );
         await pool.query(
-          `INSERT INTO employees (user_id, first_name, last_name, phone, department, position, salary, hire_date, status)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO employees (user_id, first_name, last_name, phone, department, position, salary, hire_date, status, photo)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [userResult.insertId, emp.first_name, emp.last_name, emp.phone || null,
            emp.department || null, emp.position || null, emp.salary || null,
-           hireDate || null, emp.status || "active"]
+           hireDate || null, emp.status || "active", emp.photo || null]
         );
         results.success++;
       } catch (err: any) {

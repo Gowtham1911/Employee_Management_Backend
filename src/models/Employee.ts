@@ -13,6 +13,7 @@ export interface IEmployee {
   salary: number;
   hire_date: string;
   status: "active" | "inactive";
+  photo?: string;
 }
 
 export async function getAllEmployees(): Promise<IEmployee[]> {
@@ -42,9 +43,9 @@ export async function getEmployeeById(id: number): Promise<IEmployee | null> {
 
 export async function createEmployee(data: Omit<IEmployee, "id" | "email">): Promise<number> {
   const [result] = await pool.query<ResultSetHeader>(
-    `INSERT INTO employees (user_id, first_name, last_name, phone, department, position, salary, hire_date, status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [data.user_id, data.first_name, data.last_name, data.phone, data.department, data.position, data.salary, data.hire_date, data.status]
+    `INSERT INTO employees (user_id, first_name, last_name, phone, department, position, salary, hire_date, status, photo)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [data.user_id, data.first_name, data.last_name, data.phone, data.department, data.position, data.salary, data.hire_date, data.status, data.photo ?? null]
   );
   return result.insertId;
 }
